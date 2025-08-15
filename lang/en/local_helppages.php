@@ -68,7 +68,7 @@ $string['pagecreated'] = 'Help page created successfully';
 $string['pageupdated'] = 'Help page updated successfully';
 $string['pagedeleted'] = 'Help page deleted successfully';
 $string['pagenotfound'] = 'Help page not found';
-$string['nopages'] = 'No help pages have been created yet.';
+$string['nopages'] = 'No help pages are available... yet.';
 $string['confirmdelete'] = 'Are you sure you want to delete this help page?';
 
 // Errors
@@ -95,3 +95,8 @@ $string['privacy:metadata'] = 'The Help Pages plugin does not store personal dat
 $string['hidden'] = 'Hidden';
 $string['nopagesdesc'] = 'Create your first help page to get started.';
 $string['createfirstpage'] = 'Create First Page';
+
+// Main View page
+$string['helppages'] = 'Help Pages';
+$string['availablepages'] = 'Available Help Pages';
+$string['pageindex'] = 'Help Page Index';

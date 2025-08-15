@@ -32,6 +32,33 @@ require_login();
 $context = context_system::instance();
 require_capability('local/helppages:view', $context);
 
+if ($pagename === 'view') {
+    // Show list of all visible help pages
+    $pages = local_helppages_get_visible_pages();
+    $PAGE->set_context($context);
+    $PAGE->set_url('/local/helppages/view.php', ['page' => $pagename]);
+    $PAGE->set_title(get_string('helppages', 'local_helppages'));
+    $PAGE->set_heading(get_string('helppages', 'local_helppages'));
+
+    // Render list template instead of single page
+    $templatecontext = [
+        'pages' => array_map(function($page) {
+            return [
+                'id' => $page->id,
+                'title' => format_string($page->title),
+                'name' => $page->name,
+                'viewurl' => new moodle_url('/local/helppages/view.php', ['page' => $page->name])
+            ];
+        }, $pages),
+        'haspages' => !empty($pages)
+    ];
+
+    echo $OUTPUT->header();
+    echo $OUTPUT->render_from_template('local_helppages/page_list', $templatecontext);
+    echo $OUTPUT->footer();
+    exit;
+}
+
 $page = local_helppages_get_by_name($pagename);
 
 if (!$page) {

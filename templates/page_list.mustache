@@ -1,0 +1,49 @@
+{{!
+    This file is part of FLIP Plugins for Moodle
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_helppages/page_list
+
+    Template for individual page rows in the management interface.
+
+    Context variables:
+    * id - Page ID
+    * title - Page title
+    * name - URL-friendly page name
+    * viewurl - URL for viewing the page
+}}
+{{#haspages}}
+<div class="help-pages-list">
+    <div class="row">
+        {{#pages}}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{viewurl}}" class="stretched-link">{{title}}</a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+        {{/pages}}
+    </div>
+</div>
+{{/haspages}}
+{{^haspages}}
+<div class="alert alert-info">
+    <p>{{#str}}nopages, local_helppages{{/str}}</p>
+</div>
+{{/haspages}}
