@@ -1,0 +1,58 @@
+{{!
+    @template local_helppages/page_view
+
+    Template for displaying a help page to users.
+
+    Context variables:
+    * page - The page object with id, title, content, name
+    * canmanage - Boolean indicating if user can manage pages
+    * editurl - URL for editing the page (if canmanage)
+    * manageurl - URL for managing all pages (if canmanage)
+}}
+<div class="local-helppages-page">
+    {{#canmanage}}
+        {{#notvisible}}
+            <div class="alert alert-warning">
+                {{#str}}pagenotvisible, local_helppages{{/str}}
+            </div>
+        {{/notvisible}}
+        <div class="local-helppages-actions mb-4">
+            <div class="btn-group" role="group">
+                <a href="{{editurl}}" class="btn btn-outline-primary btn-sm">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                    {{#str}}edit, local_helppages{{/str}}
+                </a>
+                <a href="{{manageurl}}" class="btn btn-outline-secondary btn-sm">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    {{#str}}managehelpages, local_helppages{{/str}}
+                </a>
+            </div>
+        </div>
+        {{/canmanage}}
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div class="flex-grow-1">
+            <h1 class="local-helppages-title">{{page.title}}</h1>
+        </div>
+    </div>
+
+    <div class="local-helppages-content">
+        <div class="card">
+            <div class="card-body">
+                {{{page.content}}}
+            </div>
+        </div>
+    </div>
+
+    {{#canmanage}}
+    <div class="local-helppages-meta mt-3">
+        <div class="card bg-light">
+            <div class="card-body">
+                <small class="text-muted">
+                    <strong>{{#str}}pagename, local_helppages{{/str}}:</strong> {{page.name}} |
+                    <strong>{{#str}}title, local_helppages{{/str}} ID:</strong> {{page.id}}
+                </small>
+            </div>
+        </div>
+    </div>
+    {{/canmanage}}
+</div>

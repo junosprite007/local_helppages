@@ -1,0 +1,58 @@
+{{!
+    @template local_helppages/page_list_item
+
+    Template for individual page rows in the management interface.
+
+    Context variables:
+    * id - Page ID
+    * title - Page title
+    * name - Page name (URL slug)
+    * visible - Boolean visibility status
+    * visibletext - Text version of visibility (Yes/No)
+    * created - Formatted creation date
+    * modified - Formatted modification date
+    * editurl - URL for editing the page
+    * viewurl - URL for viewing the page
+    * deleteurl - URL for deleting the page (with sesskey)
+}}
+<tr data-page-id="{{id}}">
+    <td>
+        <strong>{{title}}</strong>
+        {{^visible}}
+        <span class="badge bg-warning ms-2">{{#str}}hidden, local_helppages{{/str}}</span>
+        {{/visible}}
+    </td>
+    <td>
+        <code>{{name}}</code>
+    </td>
+    <td>
+        {{#visible}}
+        <span class="badge bg-success">{{visibletext}}</span>
+        {{/visible}}
+        {{^visible}}
+        <span class="badge bg-secondary">{{visibletext}}</span>
+        {{/visible}}
+    </td>
+    <td>
+        <small class="text-muted">{{created}}</small>
+    </td>
+    <td>
+        <small class="text-muted">{{modified}}</small>
+    </td>
+    <td>
+        <div class="btn-group btn-group-sm" role="group">
+            <a href="{{viewurl}}" class="btn btn-outline-info" title="{{#str}}view, local_helppages{{/str}}" target="_blank">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                <span class="sr-only">{{#str}}view, local_helppages{{/str}}</span>
+            </a>
+            <a href="{{editurl}}" class="btn btn-outline-primary" title="{{#str}}edit, local_helppages{{/str}}">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+                <span class="sr-only">{{#str}}edit, local_helppages{{/str}}</span>
+            </a>
+            <a href="{{{deleteurl}}}" class="btn btn-outline-danger" title="{{#str}}delete, local_helppages{{/str}}">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                <span class="visually-hidden">{{#str}}delete, local_helppages{{/str}}</span>
+            </a>
+        </div>
+    </td>
+</tr>

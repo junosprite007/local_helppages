@@ -1,0 +1,57 @@
+{{!
+    @template local_helppages/manage_pages
+
+    Template for managing help pages in the admin interface.
+
+    Context variables:
+    * pages - Array of page objects with id, title, name, visible, created, modified, editurl, viewurl, deleteurl
+    * haspages - Boolean indicating if there are any pages
+    * addpageurl - URL for adding a new page
+    * addpagelabel - Label for the add page button
+}}
+<div class="local-helppages-manage">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <p class="lead">{{#str}}managehelpages, local_helppages{{/str}}</p>
+        </div>
+        <div>
+            <a href="{{addpageurl}}" class="btn btn-primary">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                {{addpagelabel}}
+            </a>
+        </div>
+    </div>
+
+    {{#haspages}}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">{{#str}}title, local_helppages{{/str}}</th>
+                    <th scope="col">{{#str}}name, local_helppages{{/str}}</th>
+                    <th scope="col">{{#str}}visible, local_helppages{{/str}}</th>
+                    <th scope="col">{{#str}}created, local_helppages{{/str}}</th>
+                    <th scope="col">{{#str}}modified, local_helppages{{/str}}</th>
+                    <th scope="col">{{#str}}actions, local_helppages{{/str}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#pages}}
+                {{>local_helppages/page_list_item}}
+                {{/pages}}
+            </tbody>
+        </table>
+    </div>
+    {{/haspages}}
+
+    {{^haspages}}
+    <div class="alert alert-info text-center">
+        <h4>{{#str}}nopages, local_helppages{{/str}}</h4>
+        <p>{{#str}}nopagesdesc, local_helppages{{/str}}</p>
+        <a href="{{addpageurl}}" class="btn btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            {{#str}}createfirstpage, local_helppages{{/str}}
+        </a>
+    </div>
+    {{/haspages}}
+</div>
