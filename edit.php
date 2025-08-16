@@ -48,9 +48,11 @@ $form = new \local_helppages\form\page_form();
 if ($page) {
     // Editing existing page - prepare form data
     $formdata = clone $page;
+    $draftitemid = file_get_submitted_draft_itemid('content_editor');
     $formdata->content_editor = [
-        'text' => $page->content,
-        'format' => $page->contentformat
+        'text' => file_prepare_draft_area($draftitemid, $context->id, 'local_helppages', 'content', $page->id, ['subdirs' => true], $page->content),
+        'format' => $page->contentformat,
+        'itemid' => $draftitemid
     ];
     $form->set_data($formdata);
 }
@@ -81,6 +83,10 @@ if ($form->is_cancelled()) {
 
         $DB->update_record('local_helppages', $record);
 
+        // Save and move files from draft area
+        $record->content = file_save_draft_area_files($data->content_editor['itemid'], $context->id, 'local_helppages', 'content', $record->id, ['subdirs' => true], $record->content);
+        $DB->set_field('local_helppages', 'content', $record->content, ['id' => $record->id]);
+
         // Trigger event
         $event = \local_helppages\event\page_updated::create([
             'objectid' => $page->id,
@@ -99,6 +105,10 @@ if ($form->is_cancelled()) {
 
         $id = $DB->insert_record('local_helppages', $record);
         $record->id = $id;
+
+        // Save and move files from draft area
+        $record->content = file_save_draft_area_files($data->content_editor['itemid'], $context->id, 'local_helppages', 'content', $record->id, ['subdirs' => true], $record->content);
+        $DB->set_field('local_helppages', 'content', $record->content, ['id' => $record->id]);
 
         // Trigger event
         $event = \local_helppages\event\page_created::create([

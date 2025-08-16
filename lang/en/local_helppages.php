@@ -25,6 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Help Pages';
+$string['pagecontentfiles'] = 'Page content files';
 $string['helppages:manage'] = 'Manage help pages';
 $string['helppages:view'] = 'View help pages';
 

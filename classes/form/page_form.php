@@ -124,14 +124,17 @@ class page_form extends \moodleform {
     private function get_editor_options(): array {
         global $CFG;
 
+        $context = \context_system::instance();
+
         return [
             'maxfiles' => EDITOR_UNLIMITED_FILES,
             'maxbytes' => $CFG->maxbytes,
             'trusttext' => false,
             'forcehttps' => false,
             'subdirs' => true,
-            'context' => \context_system::instance(),
-            'noclean' => true
+            'context' => $context,
+            'noclean' => true,
+            'enable_filemanagement' => true
         ];
     }
 }

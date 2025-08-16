@@ -42,7 +42,7 @@ if ($pagename === 'view') {
 
     // Render list template instead of single page
     $templatecontext = [
-        'pages' => array_map(function($page) {
+        'pages' => array_map(function ($page) {
             return [
                 'id' => $page->id,
                 'title' => format_string($page->title),
@@ -89,7 +89,22 @@ $templatecontext = [
     'page' => [
         'id' => $page->id,
         'title' => format_string($page->title),
-        'content' => format_text($page->content, $page->contentformat, ['context' => $context]),
+        'content' => format_text(
+            file_rewrite_pluginfile_urls(
+                $page->content,
+                'pluginfile.php',
+                $context->id,
+                'local_helppages',
+                'content',
+                $page->id
+            ),
+            $page->contentformat,
+            [
+                'context' => $context,
+                'filter' => true,
+                'media' => ['class' => 'local-helppages-media']
+            ]
+        ),
         'name' => $page->name
     ],
     'canmanage' => has_capability('local/helppages:manage', $context),

@@ -140,3 +140,81 @@ function local_helppages_get_visible_pages(): array {
 
     return $visiblepages;
 }
+
+/**
+ * Serve plugin files
+ *
+ * @param stdClass $course Course object
+ * @param stdClass $cm Course module object
+ * @param stdClass $context Context object
+ * @param string $filearea File area name
+ * @param array $args Array of arguments
+ * @param bool $forcedownload Force download
+ * @param array $options Additional options
+ * @return bool|void False on failure
+ */
+function local_helppages_pluginfile($course, $cm, $context, string $filearea, array $args, bool $forcedownload, array $options = []): void {
+    global $DB;
+
+    // Check the context level is correct.
+    if ($context->contextlevel !== CONTEXT_SYSTEM) {
+        send_file_not_found();
+    }
+
+    // Make sure the filearea is one of those used by the plugin.
+    if ($filearea !== 'content') {
+        send_file_not_found();
+    }
+
+    // Make sure the user is logged in and has permission to view files.
+    require_login();
+    require_capability('local/helppages:view', $context);
+
+    // Get the page ID from the args.
+    $itemid = array_shift($args);
+
+    if (!$itemid) {
+        send_file_not_found();
+    }
+
+    // Get the page record to check permissions.
+    $page = $DB->get_record('local_helppages', ['id' => $itemid]);
+    if (!$page) {
+        send_file_not_found();
+    }
+
+    // Check if user can view this specific page.
+    if (!local_helppages_can_view_page($page)) {
+        send_file_not_found();
+    }
+
+    // Extract the filename / filepath from the $args array.
+    $filename = array_pop($args);
+    if (!$args) {
+        $filepath = '/';
+    } else {
+        $filepath = '/' . implode('/', $args) . '/';
+    }
+
+    // Retrieve the file from the Files API.
+    $fs = get_file_storage();
+    $file = $fs->get_file($context->id, 'local_helppages', $filearea, $itemid, $filepath, $filename);
+
+    if (!$file) {
+        send_file_not_found();
+    }
+
+    // We can now send the file to the browser - in this case with a cache lifetime of 1 day and no filtering.
+    send_stored_file($file, 86400, 0, $forcedownload, $options);
+}
+
+/**
+ * Get file areas used by the plugin
+ *
+ * @return array Array of file areas
+ */
+function local_helppages_get_file_areas(): array {
+    return [
+        'content' => get_string('pagecontentfiles', 'local_helppages')
+    ];
+}
