@@ -99,11 +99,7 @@ $templatecontext = [
                 $page->id
             ),
             $page->contentformat,
-            [
-                'context' => $context,
-                'filter' => true,
-                'media' => ['class' => 'local-helppages-media']
-            ]
+            ['context' => $context]
         ),
         'name' => $page->name
     ],
